@@ -19,7 +19,7 @@ In this case, the `master_addr` argument must be provided. Moreover, arguments `
 
 
 ## About Our Paper
-![architecture-fig](architecture.png)
+![architecture-fig](figs/architecture.png)
 
 ---
 
