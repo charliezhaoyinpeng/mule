@@ -5,7 +5,8 @@ Some key dependencies are listed below, while others are given in [`requirements
 - Python >= 3.6
 - PyTorch >= 1.3, and a corresponding version of torchvision
 - ffmpeg (used in data preparation)
-
+- Download pre-trained models, which are listed in [`pretrained/README.md`](https://github.com/charliezhaoyinpeng/mule/blob/main/pretrained/README.md), to the `pretrained` folder.
+- Prepare data. Please refer to [`DATA.md`](https://github.com/charliezhaoyinpeng/mule/blob/main/DATA.md).
 
 ## Usage
 Default values for arguments `nproc_per_node`, `backend` and `master_port` are `4`, `gloo` and `31114` respectively.
