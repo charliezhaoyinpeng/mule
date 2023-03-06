@@ -1,0 +1,129 @@
+evaluate: False
+ood_detection: True
+
+resume_path: /home/local/KHQ/chen.zhao/ACAR-Net-v2/experiments/AVA/20230125_OOD_SLOWFAST_R50_ACAR_HR2O(avg_schem_test)/ckpt_1.pth.tar
+
+
+result_path: experiments/AVA/20230125_OOD_SLOWFAST_R50_ACAR_HR2O(avg_schem_test)
+#manual_seed: 1
+manual_seed: 10
+print_freq: 20
+
+model:
+    freeze_bn: True
+    backbone:
+        arch: slowfast50
+        learnable: True
+        pretrain:
+#            path: pretrained/SLOWFAST_R50_K400.pth.tar
+            path: model_zoo/AVA_SLOWFAST_R50_ACAR_HR2O.pth.tar
+        kwargs:
+            alpha: 4
+            beta: 0.125
+            fuse_only_conv: False
+            fuse_kernel_size: 7
+            slow_full_span: True
+    neck:
+        type: basic
+        kwargs:
+            bbox_jitter:
+                num: 1
+                scale: 0.075
+            num_classes: 40
+            multi_class: True
+            ood: False
+    head:
+        type: acar
+        kwargs:
+            width: 2304
+            roi_spatial: 7
+            num_classes: 40
+            depth: 2
+
+loss:
+    type: ava_criterion
+    kwargs:
+        pose_softmax: False
+        use_edl: True
+
+train:
+    root_path: /data/datasets/AVA/frames
+    annotation_path: tools/ava_train_v2.2_person_obj_ud_40cls.pkl
+#    annotation_path: trash/train_test.pkl
+    batch_size: 1
+
+    augmentation:
+        spatial:
+          - type: Scale
+            kwargs:
+                resize: 256
+          - type: RandomHorizontalFlip
+          - type: ToTensor
+            kwargs:
+                norm_value: 255.
+          - type: Normalize
+            kwargs:
+                mean: [0.450, 0.450, 0.450]
+                std: [0.225, 0.225, 0.225]
+        temporal:
+            type: TemporalCenterCrop
+            kwargs:
+                size: 64
+                step: 2
+
+    n_epochs: 10
+    val_freq: 1
+    save_freq: 1
+    clip_value: 0.1
+    eps1: 0.8
+    eps2: 0.0001
+    k_iter: 2
+
+    optimizer:
+        type: SGD
+        kwargs:
+            momentum: 0.9
+            weight_decay: 0.0000001
+            nesterov: True
+
+    scheduler:
+        type: step
+        milestone_epochs: [5.6, 5.8]
+        lr_mults: [0.1, 0.1]
+        base_lr: 0.008
+        dual_lr1: 0.00001
+        dual_lr2: 0.00001
+        delta1: 1000
+        delta2: 100
+        warmup_lr: 0.064
+        warmup_epochs: 1
+
+val:
+    root_path: /data/datasets/AVA/frames
+    annotation_path: tools/ava_val_v2.2_fair_0.85_40_ood.pkl
+#    annotation_path: trash/val_test.pkl
+    batch_size: 1
+
+    augmentation:
+        spatial:
+          - type: Scale
+            kwargs:
+                resize: 256
+          - type: ToTensor
+            kwargs:
+                norm_value: 255.
+          - type: Normalize
+            kwargs:
+                mean: [0.450, 0.450, 0.450]
+                std: [0.225, 0.225, 0.225]
+        temporal:
+            type: TemporalCenterCrop
+            kwargs:
+                size: 64
+                step: 2
+
+    with_label: False
+    eval_mAP:
+        labelmap: annotations/ava_action_list_v2.2_for_activitynet_2019.pbtxt
+        groundtruth: annotations/ava_val_v2.2.csv
+        exclusions: annotations/ava_val_excluded_timestamps_v2.2.csv
