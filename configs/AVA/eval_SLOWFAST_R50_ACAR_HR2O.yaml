@@ -3,7 +3,7 @@ ood_detection: False
 
 pretrain:
 #    path: model_zoo/AVA_SLOWFAST_R50_ACAR_HR2O.pth.tar
-    path: experiments/AVA/20220328_OOD_SLOWFAST_R50_ACAR_HR2O/ckpt_6.pth.tar
+    path: experiments/AVA/20220328_OOD_SLOWFAST_R50_ACAR_HR2O/ckpt_7.pth.tar
 
 
 result_path: experiments/AVA/eval_SLOWFAST_R50_ACAR_HR2O

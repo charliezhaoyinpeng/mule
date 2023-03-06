@@ -1,7 +1,7 @@
 evaluate: False
 ood_detection: True
 
-resume_path: /home/local/KHQ/chen.zhao/ACAR-Net-v2/experiments/AVA/20230125_OOD_SLOWFAST_R50_ACAR_HR2O(avg_schem_test)/ckpt_1.pth.tar
+# resume_path: /home/local/KHQ/chen.zhao/ACAR-Net-v2/experiments/AVA/20230125_OOD_SLOWFAST_R50_ACAR_HR2O(avg_schem_test)/ckpt_1.pth.tar
 
 
 result_path: experiments/AVA/20230125_OOD_SLOWFAST_R50_ACAR_HR2O(avg_schem_test)
@@ -49,7 +49,6 @@ loss:
 train:
     root_path: /data/datasets/AVA/frames
     annotation_path: tools/ava_train_v2.2_person_obj_ud_40cls.pkl
-#    annotation_path: trash/train_test.pkl
     batch_size: 1
 
     augmentation:
@@ -101,7 +100,6 @@ train:
 val:
     root_path: /data/datasets/AVA/frames
     annotation_path: tools/ava_val_v2.2_fair_0.85_40_ood.pkl
-#    annotation_path: trash/val_test.pkl
     batch_size: 1
 
     augmentation:
